@@ -74,6 +74,7 @@ activate_local_env() {
 
 setup() {
   common_test_setup
+  setup_isolated_flox # concurrent pkgdb database creation
   project_setup
 }
 teardown() {
@@ -496,7 +497,6 @@ env_is_activated() {
   assert_line "emacs"
 }
 
-
 # ---------------------------------------------------------------------------- #
 
 # bats test_tags=activate:scripts:on-activate
@@ -511,7 +511,6 @@ env_is_activated() {
   # "$foo" environment variable.
   [ -d "$PROJECT_DIR/bar" ]
 }
-
 
 # ---------------------------------------------------------------------------- #
 
