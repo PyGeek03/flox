@@ -6,6 +6,7 @@ use tracing_subscriber::prelude::*;
 use tracing_subscriber::Registry;
 
 use crate::commands::Verbosity;
+use crate::utils::dialog::Dialog;
 use crate::utils::metrics::MetricsLayer;
 use crate::utils::TERMINAL_STDERR;
 
@@ -83,8 +84,10 @@ pub fn init_logger(verbosity: Option<Verbosity>) {
         // Logs are being passed through by the `log` crate and correctly filtered by `tracing`.
         let filter = tracing_subscriber::filter::EnvFilter::try_new("trace").unwrap();
 
+        let use_colors = Dialog::can_prompt();
         let fmt_filtered = tracing_subscriber::fmt::layer()
             .with_writer(LockingTerminalStderr)
+            .with_ansi(use_colors)
             .event_format(tracing_subscriber::fmt::format())
             .with_filter(filter);
 
