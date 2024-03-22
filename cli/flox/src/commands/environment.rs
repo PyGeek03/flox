@@ -112,7 +112,7 @@ impl Edit {
 
         let detected_environment = self
             .environment
-            .detect_concrete_environment(&flox, "edit")?;
+            .detect_concrete_environment(&flox, "Edit")?;
 
         // Ensure the user is logged in for the following remote operations
         if let ConcreteEnvironment::Remote(_) = detected_environment {
@@ -321,7 +321,7 @@ impl Delete {
         subcommand_metric!("delete");
         let environment = self
             .environment
-            .detect_concrete_environment(&flox, "delete")?;
+            .detect_concrete_environment(&flox, "Delete")?;
 
         let description = environment_description(&environment)?;
 
@@ -335,9 +335,7 @@ impl Delete {
         }
 
         let comfirm = Dialog {
-            message: &format!(
-                "You are about to delete your environment {description}. Are you sure?"
-            ),
+            message: "Are you sure?",
             help_message: Some("Use `-f` to force deletion"),
             typed: Confirm {
                 default: Some(false),
@@ -418,7 +416,7 @@ impl Activate {
             environment.activation_path(&flox)
         } else {
             Dialog {
-                message: &format!("Getting ready to use environment {now_active}..."),
+                message: &format!("Preparing environment {now_active}..."),
                 help_message: None,
                 typed: Spinner::new(|| environment.activation_path(&flox)),
             }
@@ -433,7 +431,7 @@ impl Activate {
                 })),
             ))) => {
                 let mut message = format!(
-                    "This environment is not yet compatible with your system ({system}).",
+                    "Environment not yet compatible with your system ({system}).",
                     system = flox.system
                 );
 
@@ -968,7 +966,7 @@ impl List {
 
         let mut env = self
             .environment
-            .detect_concrete_environment(&flox, "list using")?
+            .detect_concrete_environment(&flox, "List using")?
             .into_dyn_environment();
 
         let manifest_contents = env.manifest_content(&flox)?;
@@ -1129,7 +1127,7 @@ impl Install {
         );
         let concrete_environment = match self
             .environment
-            .detect_concrete_environment(&flox, "install to")
+            .detect_concrete_environment(&flox, "Install to")
         {
             Ok(concrete_environment) => concrete_environment,
             Err(EnvironmentSelectError::Environment(
@@ -1286,7 +1284,7 @@ impl Uninstall {
         );
         let concrete_environment = match self
             .environment
-            .detect_concrete_environment(&flox, "uninstall from")
+            .detect_concrete_environment(&flox, "Uninstall from")
         {
             Ok(concrete_environment) => concrete_environment,
             Err(EnvironmentSelectError::Environment(
@@ -2037,7 +2035,7 @@ impl Update {
         let (old_lockfile, new_lockfile, global, description) = match self.environment_or_global {
             EnvironmentOrGlobalSelect::Environment(ref environment_select) => {
                 let concrete_environment =
-                    environment_select.detect_concrete_environment(&flox, "update")?;
+                    environment_select.detect_concrete_environment(&flox, "Update")?;
 
                 let description = Some(environment_description(&concrete_environment)?);
                 let UpdateResult {
@@ -2203,7 +2201,7 @@ impl Upgrade {
 
         let concrete_environment = self
             .environment
-            .detect_concrete_environment(&flox, "upgrade")?;
+            .detect_concrete_environment(&flox, "Upgrade")?;
 
         let description = environment_description(&concrete_environment)?;
 
@@ -2256,7 +2254,7 @@ impl Containerize {
 
         let mut env = self
             .environment
-            .detect_concrete_environment(&flox, "upgrade")?
+            .detect_concrete_environment(&flox, "Upgrade")?
             .into_dyn_environment();
 
         let output_path = match self.output {
